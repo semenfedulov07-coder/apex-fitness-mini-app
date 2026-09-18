@@ -1,0 +1,16 @@
+export type Program = { id:string; name:string; tag:string; slogan:string; description:string; audience:string; goal:string; format:string; weeks:number; sessions:number; price:number; cover:string; status:'published'|'draft'; benefits:string[]; phases:string[]; days:number[] };
+export type Lesson = {id:string; programId:string; title:string; description:string; duration:number; thumbnail:string; videoUrl:string; status:'published'|'draft'; order:number};
+export type Review = {id:string; name:string; program:string; text:string; rating:number; period:string; photo:string};
+export type Result = {id:string; name:string; before:number; after:number; months:number; goal:string; photo:string};
+export type Coach = {name:string; bio:string; experience:number; specialty:string; photo:string; contact:string};
+export type Package = {id:string; name:string; price:number; description:string; features:string[]};
+export type Application = {id:string; name:string; goal:string; experience:string; contact:string; package:string; date:string};
+export type Media = {id:string; name:string; url:string};
+export type Purchase = {id:string; programId:string; tier:number; price:number; date:string};
+export type Exercise = {id:string; name:string; muscle:string; sets:number; reps:string; defaultWeight:string; rest:number; technique:string; image:string};
+export type Workout = {id:string; title:string; subtitle:string; exercises:Exercise[]};
+export type WorkoutStatus = 'planned'|'completed'|'missed';
+export type SetLog = {reps:string; weight:string; done:boolean};
+export type WorkoutRecord = {id:string; key:string; programId:string; workoutId:string; title:string; date:string; duration:number; status:'completed'|'missed'; completedSets:number; totalSets:number};
+export type State = {version:1; programs:Program[]; lessons:Lesson[]; reviews:Review[]; results:Result[]; coach:Coach; packages:Package[]; applications:Application[]; media:Media[]; purchases:Purchase[]; completed:string[]; exerciseChecks:Record<string,string[]>; setLogs:Record<string,Record<string,SetLog[]>>; workoutStatus:Record<string,WorkoutStatus>; workoutHistory:WorkoutRecord[]; lessonChecks:string[]; habits:Record<string,string[]>; weights:{date:string; value:number}[]; userName:string; reminders:boolean; activeProgram:string};
+export type Route = {page:string; id?:string; week?:number; day?:number};
