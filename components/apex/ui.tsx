@@ -1,0 +1,21 @@
+'use client';
+import {useEffect,useState} from 'react';
+import {ArrowUpRight,ChevronRight,Check,Plus} from 'lucide-react';
+import {Button} from '@/components/ui/button';
+import {Accordion,AccordionContent,AccordionItem,AccordionTrigger} from '@/components/ui/accordion';
+import {Sheet,SheetContent,SheetDescription,SheetTitle} from '@/components/ui/sheet';
+import {images,faq,money} from '@/lib/apex/data';
+import type {Program} from '@/lib/apex/models';
+export function Photo({src,alt='',className=''}:{src:string;alt?:string;className?:string}){const [failed,setFailed]=useState(false);useEffect(()=>setFailed(false),[src]);return <img src={failed?images.strength:src||images.strength} alt={alt} className={className} onError={()=>setFailed(true)} loading="lazy"/>}
+export function Logo(){return <span className="logo">APEX<span className="logo-slash">/</span></span>}
+export function Btn({children,secondary=false,className='',...props}:React.ComponentProps<typeof Button>&{secondary?:boolean}){return <Button {...props} variant={secondary?'outline':'default'} className={`apex-btn ${secondary?'secondary':''} ${className}`}>{children}</Button>}
+export function Eyebrow({children}:{children:React.ReactNode}){return <p className="eyebrow">{children}</p>}
+export function Title({kicker,title,copy}:{kicker?:string;title:string;copy?:string}){return <header className="page-title">{kicker&&<Eyebrow>{kicker}</Eyebrow>}<h1>{title}</h1>{copy&&<p>{copy}</p>}</header>}
+export function SectionHead({number,title,action,onClick}:{number?:string;title:string;action?:string;onClick?:()=>void}){return <div className="section-head"><h2>{number&&<span>{number} / </span>}{title}</h2>{action&&<button className="text-link" onClick={onClick}>{action}<ArrowUpRight size={16}/></button>}</div>}
+export function ProgramCard({p,onClick,owned=false,index=0}:{p:Program;onClick:()=>void;owned?:boolean;index?:number}){return <button className={`program-card program-${p.id}`} onClick={onClick} aria-label={`Открыть программу ${p.name}`}><div className="program-image"><Photo src={p.cover} alt={p.tag}/><span className="tag">{owned?'В МОЕЙ КОЛЛЕКЦИИ':p.tag}</span><span className="program-index">0{index+1}</span><div className="program-overlay"><small>{p.goal||p.tag}</small><h3>{p.name}</h3><span className="round-arrow"><ArrowUpRight/></span></div></div><div className="program-info"><div><p>{p.slogan}</p><span>{p.weeks} нед. <i/> {p.sessions} тренировок <i/> {p.format||'Тренировочная программа'}</span></div><strong>{money(p.price)}</strong></div><span className="program-open">Смотреть программу <ArrowUpRight/></span></button>}
+export function Bar({value}:{value:number}){return <div className="progress-track" role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}><span style={{width:`${value}%`}}/></div>}
+export function Faq({items=faq}:{items?:string[][]}){return <Accordion type="single" collapsible className="faq">{items.map(([q,a],i)=><AccordionItem value={String(i)} key={q}><AccordionTrigger>{q}</AccordionTrigger><AccordionContent>{a}</AccordionContent></AccordionItem>)}</Accordion>}
+export function Panel({open,onClose,title,description,children}:{open:boolean;onClose:()=>void;title:string;description?:string;children:React.ReactNode}){return <Sheet open={open} onOpenChange={v=>{if(!v)onClose()}}><SheetContent side="bottom" className="apex-sheet"><div className="sheet-handle"/><SheetTitle>{title}</SheetTitle><SheetDescription>{description||'APEX PERFORMANCE'}</SheetDescription>{children}</SheetContent></Sheet>}
+export function Empty({title,copy,action,onClick}:{title:string;copy:string;action:string;onClick:()=>void}){return <div className="empty"><div className="empty-mark">A/</div><h2>{title}</h2><p>{copy}</p><Btn onClick={onClick}>{action}<ArrowUpRight/></Btn></div>}
+export function CheckMark({done}:{done:boolean}){return <span className={`check-mark ${done?'checked':''}`}>{done?<Check size={17}/>:<Plus size={16}/>}</span>}
+export function Row({title,description,onClick,children}:{title:string;description?:string;onClick?:()=>void;children?:React.ReactNode}){return <button className="link-row" onClick={onClick}><span><strong>{title}</strong>{description&&<small>{description}</small>}</span>{children||<ChevronRight size={19}/>}</button>}
